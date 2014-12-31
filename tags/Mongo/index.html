@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: mongo | Laispace - 来思碑</title>
+  <title>Tag: Mongo | Laispace - 来思碑</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="小赖做笔记的地方">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Laispace - 来思碑">
-<meta property="og:url" content="http://laispace.github.io/tags/mongo/">
+<meta property="og:url" content="http://laispace.github.io/tags/Mongo/">
 <meta property="og:site_name" content="Laispace - 来思碑">
 <meta property="og:description" content="小赖做笔记的地方">
 <meta name="twitter:card" content="summary">
@@ -92,14 +92,14 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-mongoose-学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-ubuntu下部署nodejs+mongodb" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2014/05/mongoose-学习笔记/" class="article-date">
-  <time datetime="2014-05-21T10:22:53.000Z" itemprop="datePublished">5月 21 2014</time>
+    <a href="/2014/05/ubuntu下部署nodejs+mongodb/" class="article-date">
+  <time datetime="2014-05-25T07:46:36.000Z" itemprop="datePublished">5月 25 2014</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/Database/">Database<span class="article-category-count">2</span></a>
+    <a class="article-category-link" href="/categories/Node/">Node<span class="article-category-count">24</span></a>
   </div>
 
   </div>
@@ -110,7 +110,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2014/05/mongoose-学习笔记/">Mongoose-学习笔记</a>
+      <a class="article-title" href="/2014/05/ubuntu下部署nodejs+mongodb/">Ubuntu下部署nodejs+mongodb</a>
     </h1>
   
 
@@ -118,99 +118,42 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>定义模式 Schema -&gt; 定义模型 model -&gt; 定义实例 -&gt; 增查删改这个实例</p>
-<p>在模式中可以直接定义一些方法，使得使用模型生成的实例都继承了这些方法，可直接调用。</p>
-<ul>
-<li><p>快速开始</p>
-<pre><code>  <span class="keyword">var</span> mongoose = <span class="built_in">require</span>(<span class="string">'mongoose'</span>);
-
-  <span class="comment">// 【模式】</span>
-  <span class="keyword">var</span> UserSchema = mongoose.Schema({
-    name: <span class="built_in">String</span>,
-    age: <span class="built_in">Number</span>
-  })
-
-  <span class="comment">// 【方法】在模式中添加一个方法，则生成的实例中将可以直接调用这个方法</span>
-  UserSchema.methods.say = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{
-    <span class="keyword">var</span> name = <span class="keyword">this</span>.name;
-    <span class="keyword">if</span> (name) {
-      <span class="built_in">console</span>.log(<span class="string">'我的名字是：'</span>, name);
-    } <span class="keyword">else</span> {
-      <span class="built_in">console</span>.log(<span class="string">'我还没有名字'</span>);
-    }
-  };
-
-  <span class="comment">// 【模型】使用模式定义一个模型</span>
-  <span class="keyword">var</span> User = mongoose.model(<span class="string">'User'</span>, UserSchema);
-
-  <span class="comment">// 【实例】使用模型定义一个实例</span>
-  <span class="keyword">var</span> newUser = <span class="keyword">new</span> User({
-    name: <span class="string">'小赖'</span>,
-    age: <span class="number">18</span>  <span class="comment">// 我年年十八</span>
-  })
-  <span class="comment">// 【实例】使用模型定义一个实例</span>
-  <span class="keyword">var</span> r = <span class="built_in">parseInt</span>(<span class="built_in">Math</span>.random() * <span class="number">10</span> + <span class="number">20</span>);
-  <span class="keyword">var</span> newUserRandom = <span class="keyword">new</span> User({
-    name: <span class="string">'用户'</span>+r,
-    age: r  <span class="comment">//</span>
-  })
-  <span class="comment">// 实例中调用模式中定义好的方法</span>
-  newUser.say(); <span class="comment">// =&gt; '我的名字是：小赖'</span>
-  newUserRandom.say();
-
-  <span class="comment">// 【增】将实例保存到数据库</span>
-  newUser.save(<span class="function"><span class="keyword">function</span> <span class="params">(err, newUser)</span> </span>{
-    <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;
-    <span class="built_in">console</span>.log(<span class="string">'【增】保存数据成功, 成功保存的数据是：\n'</span>, newUser);
-  });
-  <span class="comment">// 【增】将实例保存到数据库</span>
-  newUserRandom.save(<span class="function"><span class="keyword">function</span> <span class="params">(err, newUser)</span> </span>{
-    <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;
-    <span class="built_in">console</span>.log(<span class="string">'【增】保存数据成功, 成功保存的数据是：\n'</span>, newUserRandom);
-  });
-
-  <span class="comment">// 【查】查询所有文档</span>
-  User.find(<span class="function"><span class="keyword">function</span> <span class="params">(err, users)</span> </span>{
-    <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;
-    <span class="built_in">console</span>.log(<span class="string">'【查】当前数据库的所有用户是：\n'</span>, users);
-  });
-  <span class="comment">// 【查】限定条件查询</span>
-  User.find({age: <span class="number">20</span>}, <span class="function"><span class="keyword">function</span> <span class="params">(err, users)</span> </span>{
-    <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;
-    <span class="built_in">console</span>.log(<span class="string">'查询到年龄为20的用户有：\n'</span>, users);
-  })
-
-  <span class="comment">// 连接数据库</span>
-  mongoose.connect(<span class="string">'mongodb://localhost/test'</span>);
-
-  <span class="comment">// 获取连接</span>
-  <span class="keyword">var</span> db = mongoose.connection;
-
-  <span class="comment">// 连接错误</span>
-  db.on(<span class="string">'error'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(err)</span> </span>{
-    <span class="built_in">console</span>.log(<span class="string">'连接失败：'</span>, err);
-  });
-
-  <span class="comment">// 连接成功</span>
-  db.on(<span class="string">'open'</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>{
-    <span class="built_in">console</span>.log(<span class="string">'连接成功！'</span>);
-  })
+        <blockquote>
+<p>捣鼓阿里云上的VPS，入门Linux，记录一下部署 NodeJs+MongoDB 的过程</p>
+</blockquote>
+<ol>
+<li><p><a href="https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager#ubuntu-mint-elementary-os" target="_blank" rel="external">Ubuntu下安装NodeJS</a></p>
+<p> 在 Ubuntu 12.04 ~ 13.04 中，默认安装的的 Node 版本是 0.6.x的</p>
+<pre><code> <span class="variable">$ </span>sudo apt-get install nodejs
+ <span class="variable">$ </span>sudo apt-get install npm
+ <span class="variable">$ </span>node -v
+</code></pre><p> 而在 Ubuntu 13.10 ~ 14.04 中则是 0.10.x 版本</p>
+<p> 我的版本是旧版，所以需要使用这种方式来安装：</p>
+<pre><code> $ sudo apt-<span class="built_in">get</span> install software-properties-common
+ $ sudo apt-<span class="built_in">get</span> install <span class="keyword">python</span>-software-properties
+ // 安装以上两个包后才会有下面这个 <span class="built_in">add</span>-apt-repository 命令：
+ $ sudo <span class="built_in">add</span>-apt-repository <span class="keyword">pp</span><span class="variable">a:chris</span>-lea/node.js
+ $ sudo apt-<span class="built_in">get</span> <span class="keyword">update</span>
+ $ sudo apt-<span class="built_in">get</span> install <span class="keyword">python</span>-software-properties <span class="keyword">python</span> <span class="keyword">g</span>++ <span class="keyword">make</span> nodejs
 </code></pre></li>
-</ul>
+</ol>
+<ol>
+<li><a href="http://docs.mongodb.org/manual/tutorial/install-mongodb-on-linux/" target="_blank" rel="external">Linux下安装MongoDB</a></li>
+</ol>
 
         
           <p class="article-more-link">
-            <a href="/2014/05/mongoose-学习笔记/#more">阅读全文</a>
+            <a href="/2014/05/ubuntu下部署nodejs+mongodb/#more">阅读全文</a>
           </p>
         
       
     </div>
     <footer class="article-footer">
       <!--
-      <a data-url="http://laispace.github.io/2014/05/mongoose-学习笔记/" data-id="8aw4q11zuinj1q7z" class="article-share-link">Share</a>
+      <a data-url="http://laispace.github.io/2014/05/ubuntu下部署nodejs+mongodb/" data-id="os9nkmgmgxpna6cw" class="article-share-link">Share</a>
       -->
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongo/">mongo</a><span class="article-tag-list-count">1</span></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongoose/">mongoose</a><span class="article-tag-list-count">2</span></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a><span class="article-tag-list-count">4</span></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mongo/">Mongo</a><span class="article-tag-list-count">1</span></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node/">Node</a><span class="article-tag-list-count">2</span></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a><span class="article-tag-list-count">1</span></li></ul>
 
       
     </footer>
@@ -236,11 +179,11 @@
           </li>
         
           <li>
-            <a href="/2014/12/移动 Web 开发技巧/">移动 Web 开发技巧</a>
+            <a href="/2014/12/JavaScript 碎片/">JavaScript 碎片</a>
           </li>
         
           <li>
-            <a href="/2014/12/JavaScript 碎片/">JavaScript 碎片</a>
+            <a href="/2014/12/移动 Web 开发技巧/">移动 Web 开发技巧</a>
           </li>
         
           <li>
